@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Menu, X } from 'lucide-react';
 import Button from '../common/Button';
+import ConnectWalletButton from '../wallet/ConnectWalletButton';
 
 const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,8 +37,9 @@ const Header = () => {
                         ))}
                     </nav>
 
-                    {/* CTA Button */}
-                    <div className="hidden lg:block">
+                    {/* Wallet & CTA Buttons */}
+                    <div className="hidden lg:flex items-center gap-4">
+                        <ConnectWalletButton />
                         <Link to="/submit">
                             <Button variant="primary">Submit Your Website</Button>
                         </Link>

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ExternalLink, Share2, Check, X } from 'lucide-react';
+import { ExternalLink, Share2, Check, X, Shield, Star, Award, TrendingUp, Info } from 'lucide-react';
+import { motion } from 'framer-motion';
 import PageLayout from '../components/layout/PageLayout';
 import Breadcrumb from '../components/common/Breadcrumb';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
 import Button from '../components/common/Button';
 import Modal from '../components/common/Modal';
-import { getWebsiteBySlug } from '../data/mockData';
+import WebsiteReviews from '../components/reviews/WebsiteReviews';
+import WebsiteCard from '../components/website/WebsiteCard'; // Import for Similar Websites
+import { getWebsiteBySlug, getWebsitesByCategory } from '../data/mockData';
 
 const WebsiteDetail = () => {
     const { slug } = useParams();
@@ -26,6 +29,11 @@ const WebsiteDetail = () => {
         );
     }
 
+    // Get Similar Websites
+    const similarWebsites = getWebsitesByCategory(website.category)
+        .filter(w => w.id !== website.id)
+        .slice(0, 3);
+
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
         { label: website.category, href: `/category/${website.category.toLowerCase().replace(/ /g, '-')}` },
@@ -38,198 +46,285 @@ const WebsiteDetail = () => {
         { id: 'details', label: 'Details' }
     ];
 
+    // Trust Score Calculation (Mock logic for visual)
+    const trustScore = 98; // Could be dynamic based on verification
+    const trustColor = trustScore >= 90 ? 'text-green-500' : trustScore >= 70 ? 'text-yellow-500' : 'text-red-500';
+    const trustGradient = trustScore >= 90 ? 'from-green-400 to-emerald-600' : 'from-yellow-400 to-orange-500';
+
     return (
         <PageLayout>
-            <div className="container-custom py-12">
-                <Breadcrumb items={breadcrumbItems} />
+            {/* Dynamic Hero Section */}
+            <div className="relative bg-slate-50 overflow-hidden pt-12 pb-24">
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 to-accent/5 z-0"></div>
+                {/* Decorative Blobs */}
+                <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-purple-200/20 rounded-full blur-3xl"></div>
 
-                {/* Header Card */}
-                <Card className="mb-8">
-                    <div className="flex flex-col md:flex-row items-start gap-6">
-                        <div className="w-24 h-24 bg-gray-100 rounded-xl flex items-center justify-center text-4xl font-bold text-primary flex-shrink-0">
-                            {website.name.charAt(0)}
-                        </div>
+                <div className="container-custom relative z-10">
+                    <Breadcrumb items={breadcrumbItems} className="mb-8" />
 
-                        <div className="flex-1">
-                            <div className="flex flex-wrap items-center gap-3 mb-3">
-                                <h1 className="text-3xl font-bold text-text-main">{website.name}</h1>
-                                {website.verified && <Badge variant="verified">Verified</Badge>}
-                                {website.featured && <Badge variant="featured">Featured</Badge>}
-                            </div>
-
-                            <div className="flex flex-wrap gap-2 mb-4">
-                                <Badge variant="category">{website.category}</Badge>
-                                <span className="text-sm text-text-muted">Verified on {website.verifiedDate}</span>
-                            </div>
-
-                            <p className="text-text-muted mb-4">{website.shortDescription}</p>
-
-                            <div className="flex gap-3">
-                                <Button
-                                    onClick={() => setShowExternalModal(true)}
-                                    className="inline-flex items-center gap-2"
-                                >
-                                    Visit Website <ExternalLink className="w-4 h-4" />
-                                </Button>
-                                <Button variant="outline">
-                                    <Share2 className="w-4 h-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Card>
-
-                {/* Tabs */}
-                <div className="border-b mb-8">
-                    <div className="flex gap-8">
-                        {tabs.map(tab => (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`pb-4 font-medium transition-colors relative ${activeTab === tab.id
-                                        ? 'text-primary'
-                                        : 'text-text-muted hover:text-text-main'
-                                    }`}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                        {/* Logo and Main Info */}
+                        <div className="lg:col-span-8">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="flex flex-col md:flex-row items-start gap-6 mb-8"
                             >
-                                {tab.label}
-                                {activeTab === tab.id && (
-                                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
-                                )}
-                            </button>
-                        ))}
+                                <motion.img
+                                    initial={{ scale: 0.9, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ delay: 0.1 }}
+                                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(website.name)}&size=128&background=0D6EFD&color=fff&bold=true`}
+                                    alt={website.name}
+                                    className="w-32 h-32 rounded-3xl object-cover shadow-2xl border-4 border-white"
+                                />
+                                <div className="flex-1">
+                                    <h1 className="text-4xl md:text-5xl font-bold text-text-main mb-3">{website.name}</h1>
+                                    <div className="flex flex-wrap gap-3 mb-4">
+                                        {website.featured && (
+                                            <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-md flex items-center gap-1">
+                                                <Star className="w-4 h-4 fill-current" /> Featured
+                                            </span>
+                                        )}
+                                        <Badge variant="category" className="text-sm px-3 py-1">{website.category}</Badge>
+                                        <span className="flex items-center gap-1 bg-white px-3 py-1 rounded-full border border-gray-200 text-sm font-medium text-text-muted shadow-sm">
+                                            <Shield className="w-4 h-4 text-green-500" /> Verified
+                                        </span>
+                                    </div>
+                                    <p className="text-xl text-text-muted leading-relaxed">{website.shortDescription}</p>
+                                </div>
+                            </motion.div>
+
+                            <div className="flex flex-wrap gap-4">
+                                <Button
+                                    size="lg"
+                                    onClick={() => setShowExternalModal(true)}
+                                    className="shadow-premium shadow-primary/30 hover:shadow-primary/50 transition-all hover:scale-105"
+                                >
+                                    Visit Website <ExternalLink className="w-5 h-5 ml-2" />
+                                </Button>
+                                <Button variant="outline" size="lg" className="bg-white hover:bg-gray-50">
+                                    <Share2 className="w-5 h-5 mr-2" /> Share
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* Trust Score & Quick Stats Card */}
+                        <div className="lg:col-span-4">
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="bg-white rounded-3xl p-6 shadow-premium border border-gray-100 relative overflow-hidden"
+                            >
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-green-50 to-transparent rounded-bl-full"></div>
+
+                                <div className="flex items-center justify-between mb-6 relative z-10">
+                                    <div>
+                                        <h3 className="font-bold text-lg text-text-main">Trust Score</h3>
+                                        <p className="text-sm text-text-muted">Based on 4 checks</p>
+                                    </div>
+                                    <div className={`relative w-16 h-16 flex items-center justify-center font-bold text-xl ${trustColor}`}>
+                                        {/* Simple SVG Gauge Ring */}
+                                        <svg className="absolute w-full h-full transform -rotate-90">
+                                            <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="none" className="text-gray-100" />
+                                            <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="none" strokeDasharray="176" strokeDashoffset={176 - (176 * trustScore) / 100} className="transition-all duration-1000 ease-out" />
+                                        </svg>
+                                        {trustScore}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4 relative z-10">
+                                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                                        <div className="flex items-center gap-2">
+                                            <Shield className="w-5 h-5 text-blue-500" />
+                                            <span className="font-medium text-sm">Security Check</span>
+                                        </div>
+                                        <Check className="w-5 h-5 text-green-500" />
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                                        <div className="flex items-center gap-2">
+                                            <Award className="w-5 h-5 text-purple-500" />
+                                            <span className="font-medium text-sm">Community Voted</span>
+                                        </div>
+                                        <Check className="w-5 h-5 text-green-500" />
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                                        <div className="flex items-center gap-2">
+                                            <TrendingUp className="w-5 h-5 text-orange-500" />
+                                            <span className="font-medium text-sm">Traffic Analysis</span>
+                                        </div>
+                                        <span className="text-sm font-bold text-green-600">High</span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <div className="container-custom py-12 -mt-12 relative z-20">
+                {/* Tabs, rounded and floating */}
+                <div className="bg-white p-2 rounded-2xl shadow-lg border border-gray-100 inline-flex mb-8">
+                    {tabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`px-8 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === tab.id
+                                    ? 'bg-primary text-white shadow-md'
+                                    : 'text-text-muted hover:bg-gray-50'
+                                }`}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
                 </div>
 
                 {/* Tab Content */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 space-y-8">
                         {activeTab === 'overview' && (
-                            <div className="space-y-8">
-                                <Card>
-                                    <h2 className="text-2xl font-bold mb-4">About {website.name}</h2>
-                                    <p className="text-text-muted leading-relaxed">{website.longDescription}</p>
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+                                <Card className="border-t-4 border-t-primary">
+                                    <h2 className="text-2xl font-bold mb-4">About the Platform</h2>
+                                    <p className="text-text-muted leading-relaxed whitespace-pre-line">{website.longDescription}</p>
                                 </Card>
 
-                                <Card>
-                                    <h2 className="text-2xl font-bold mb-4">Pros & Cons</h2>
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <div>
-                                            <h3 className="font-semibold text-green-700 mb-3 flex items-center gap-2">
-                                                <Check className="w-5 h-5" /> Pros
-                                            </h3>
-                                            <ul className="space-y-2">
-                                                {website.pros.map((pro, i) => (
-                                                    <li key={i} className="flex items-start gap-2 text-sm">
-                                                        <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                                        <span>{pro}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <h3 className="font-semibold text-orange-700 mb-3 flex items-center gap-2">
-                                                <X className="w-5 h-5" /> Cons
-                                            </h3>
-                                            <ul className="space-y-2">
-                                                {website.cons.map((con, i) => (
-                                                    <li key={i} className="flex items-start gap-2 text-sm">
-                                                        <X className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                                                        <span>{con}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <Card className="bg-green-50/50 border-green-100">
+                                        <h3 className="font-bold text-green-800 mb-4 flex items-center gap-2 text-lg">
+                                            <div className="p-1 bg-green-200 rounded-full"><Check className="w-4 h-4 text-green-700" /></div>
+                                            Pros
+                                        </h3>
+                                        <ul className="space-y-3">
+                                            {website.pros.map((pro, i) => (
+                                                <li key={i} className="flex items-start gap-3 text-sm font-medium text-gray-700">
+                                                    <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                                    <span>{pro}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Card>
+
+                                    <Card className="bg-red-50/50 border-red-100">
+                                        <h3 className="font-bold text-red-800 mb-4 flex items-center gap-2 text-lg">
+                                            <div className="p-1 bg-red-200 rounded-full"><X className="w-4 h-4 text-red-700" /></div>
+                                            Cons
+                                        </h3>
+                                        <ul className="space-y-3">
+                                            {website.cons.map((con, i) => (
+                                                <li key={i} className="flex items-start gap-3 text-sm font-medium text-gray-700">
+                                                    <X className="w-5 h-5 text-red-500 flex-shrink-0" />
+                                                    <span>{con}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Card>
+                                </div>
+                            </motion.div>
                         )}
 
                         {activeTab === 'features' && (
-                            <Card>
-                                <h2 className="text-2xl font-bold mb-6">Features</h2>
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    {Object.entries(website.features).map(([key, value]) => (
-                                        <div key={key} className="flex items-center gap-3">
-                                            {value ? (
-                                                <Check className="w-5 h-5 text-green-500" />
-                                            ) : (
-                                                <X className="w-5 h-5 text-gray-300" />
-                                            )}
-                                            <span className="capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </Card>
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                                <Card>
+                                    <h2 className="text-2xl font-bold mb-6">Key Features</h2>
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                        {Object.entries(website.features).map(([key, value]) => (
+                                            <div key={key} className={`flex items-center gap-4 p-4 rounded-xl border transition-all ${value ? 'border-gray-100 bg-gray-50' : 'border-dashed border-gray-200 opacity-60'}`}>
+                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${value ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-400'}`}>
+                                                    {value ? <Check className="w-5 h-5" /> : <X className="w-5 h-5" />}
+                                                </div>
+                                                <span className="font-bold text-text-main capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Card>
+                            </motion.div>
                         )}
 
                         {activeTab === 'details' && (
-                            <Card>
-                                <h2 className="text-2xl font-bold mb-6">Details</h2>
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                                <Card>
+                                    <h2 className="text-2xl font-bold mb-6">Platform Details</h2>
+                                    <div className="divide-y divide-gray-100">
+                                        {[
+                                            { label: 'Founded', value: website.details.founded },
+                                            { label: 'Headquarters', value: website.details.headquarters },
+                                            { label: 'Supported Countries', value: website.details.supportedCountries },
+                                            { label: 'Languages', value: website.details.languages.join(', ') },
+                                            { label: 'Blockchains', value: website.details.blockchains.join(', ') },
+                                            { label: 'Fees', value: website.details.fees, highlight: true }
+                                        ].map((item, i) => (
+                                            <div key={i} className="grid grid-cols-2 gap-4 py-4">
+                                                <span className="text-text-muted font-medium">{item.label}</span>
+                                                <span className={`font-bold ${item.highlight ? 'text-primary' : 'text-text-main'}`}>{item.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Card>
+                            </motion.div>
+                        )}
+
+                        {/* Reviews Component */}
+                        <WebsiteReviews websiteId={website.slug} />
+                    </div>
+
+                    {/* Sidebar moved to bottom on mobile, sticky on desktop */}
+                    <div className="lg:col-span-1 space-y-6">
+                        <div className="sticky top-24 space-y-6">
+                            <Card className="bg-gradient-to-br from-primary/5 to-transparent border-primary/10">
+                                <h3 className="font-bold mb-4 flex items-center gap-2">
+                                    <Info className="w-4 h-4 text-primary" /> Quick Info
+                                </h3>
                                 <div className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4 pb-4 border-b">
-                                        <span className="text-text-muted">Founded</span>
-                                        <span className="font-medium">{website.details.founded}</span>
+                                    <div className="flex justify-between items-center pb-3 border-b border-gray-100 border-dashed">
+                                        <span className="text-sm text-text-muted">Category</span>
+                                        <Badge variant="category">{website.category}</Badge>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 pb-4 border-b">
-                                        <span className="text-text-muted">Headquarters</span>
-                                        <span className="font-medium">{website.details.headquarters}</span>
+                                    <div className="flex justify-between items-center pb-3 border-b border-gray-100 border-dashed">
+                                        <span className="text-sm text-text-muted">Status</span>
+                                        <span className="flex items-center gap-1 text-green-600 font-bold text-sm">
+                                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Active
+                                        </span>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 pb-4 border-b">
-                                        <span className="text-text-muted">Supported Countries</span>
-                                        <span className="font-medium">{website.details.supportedCountries}</span>
+                                    <div className="flex justify-between items-center pb-3 border-b border-gray-100 border-dashed">
+                                        <span className="text-sm text-text-muted">Added</span>
+                                        <span className="text-sm font-medium">{website.dateAdded}</span>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 pb-4 border-b">
-                                        <span className="text-text-muted">Languages</span>
-                                        <span className="font-medium">{website.details.languages.join(', ')}</span>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4 pb-4 border-b">
-                                        <span className="text-text-muted">Blockchains</span>
-                                        <span className="font-medium">{website.details.blockchains.join(', ')}</span>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <span className="text-text-muted">Fees</span>
-                                        <span className="font-medium">{website.details.fees}</span>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm text-text-muted">Last Updated</span>
+                                        <span className="text-sm font-medium">{website.lastUpdated}</span>
                                     </div>
                                 </div>
                             </Card>
-                        )}
-                    </div>
 
-                    {/* Sidebar */}
-                    <div className="space-y-6">
-                        <Card>
-                            <h3 className="font-bold mb-4">Quick Info</h3>
-                            <div className="space-y-3 text-sm">
-                                <div>
-                                    <span className="text-text-muted">Category:</span>
-                                    <div className="mt-1"><Badge variant="category">{website.category}</Badge></div>
-                                </div>
-                                <div>
-                                    <span className="text-text-muted">Status:</span>
-                                    <div className="mt-1"><Badge variant="verified">Verified</Badge></div>
-                                </div>
-                                <div>
-                                    <span className="text-text-muted">Added:</span>
-                                    <div className="mt-1 font-medium">{website.dateAdded}</div>
-                                </div>
-                                <div>
-                                    <span className="text-text-muted">Last Updated:</span>
-                                    <div className="mt-1 font-medium">{website.lastUpdated}</div>
+                            {/* Similar Websites Widget */}
+                            <div className="pt-6">
+                                <h3 className="font-bold text-lg mb-4">Similar Platforms</h3>
+                                <div className="space-y-4">
+                                    {similarWebsites.map(site => (
+                                        <Link key={site.id} to={`/website/${site.slug}`} className="block group">
+                                            <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex items-center gap-3 transition-all hover:shadow-md hover:border-primary/30">
+                                                <img
+                                                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(site.name)}&size=64&background=random`}
+                                                    alt={site.name}
+                                                    className="w-10 h-10 rounded-lg"
+                                                />
+                                                <div className="flex-1 min-w-0">
+                                                    <h4 className="font-bold text-text-main truncate group-hover:text-primary transition-colors">{site.name}</h4>
+                                                    <div className="flex items-center gap-1 text-xs text-text-muted">
+                                                        <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                                                        {site.rating}
+                                                    </div>
+                                                </div>
+                                                <ExternalLink className="w-4 h-4 text-gray-300 group-hover:text-primary" />
+                                            </div>
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
-                        </Card>
-
-                        <Card>
-                            <h3 className="font-bold mb-4">Official Website</h3>
-                            <a
-                                href={website.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-sm text-primary hover:underline break-all"
-                            >
-                                {website.url}
-                            </a>
-                        </Card>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -241,10 +336,15 @@ const WebsiteDetail = () => {
                 title="You're Leaving Crypto Suggest"
             >
                 <div className="text-center py-4">
+                    <div className="w-16 h-16 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <ExternalLink className="w-8 h-8 text-yellow-500" />
+                    </div>
                     <p className="text-text-muted mb-6">
                         You are about to visit an external website. Crypto Suggest is not responsible for the content or security of external sites.
                     </p>
-                    <p className="font-medium mb-6">{website.url}</p>
+                    <div className="bg-slate-50 p-3 rounded-lg font-mono text-sm mb-8 break-all border border-gray-200">
+                        {website.url}
+                    </div>
                     <div className="flex gap-3 justify-center">
                         <Button variant="outline" onClick={() => setShowExternalModal(false)}>
                             Cancel

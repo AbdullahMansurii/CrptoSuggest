@@ -7,6 +7,9 @@
 @layer base {
     body {
         @apply bg-white text-text-main font-sans antialiased;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     h1,
@@ -16,22 +19,33 @@
     h5,
     h6 {
         @apply font-heading font-bold;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
     }
 
     h1 {
         @apply text-4xl md:text-5xl lg:text-6xl;
+        font-weight: 800;
     }
 
     h2 {
         @apply text-3xl md:text-4xl lg:text-5xl;
+        font-weight: 700;
     }
 
     h3 {
         @apply text-2xl md:text-3xl lg:text-4xl;
+        font-weight: 700;
     }
 
     h4 {
         @apply text-xl md:text-2xl;
+        font-weight: 600;
+    }
+
+    p {
+        line-height: 1.7;
+        letter-spacing: 0.01em;
     }
 }
 
@@ -41,61 +55,85 @@
     }
 
     .btn {
-        @apply px-6 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center gap-2;
+        @apply px-8 py-4 rounded-xl font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
     }
 
     .btn-primary {
-        @apply bg-primary text-white hover:bg-primary-dark hover:shadow-lg hover:scale-105;
+        @apply bg-gradient-to-r from-primary to-primary-dark text-white;
+        box-shadow: 0 8px 20px rgba(31, 143, 229, 0.3);
+    }
+
+    .btn-primary:hover {
+        @apply shadow-2xl;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 12px 28px rgba(31, 143, 229, 0.4);
     }
 
     .btn-secondary {
-        @apply bg-accent text-white hover:bg-accent-light hover:shadow-lg hover:scale-105;
+        @apply bg-gradient-to-r from-accent to-accent/90 text-white;
+        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-secondary:hover {
+        @apply shadow-2xl;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 12px 28px rgba(255, 107, 107, 0.4);
     }
 
     .btn-outline {
-        @apply border-2 border-primary text-primary hover:bg-primary hover:text-white;
+        @apply border-2 border-primary text-primary bg-white;
+    }
+
+    .btn-outline:hover {
+        @apply bg-primary text-white;
+        transform: translateY(-2px);
     }
 
     .card {
-        @apply bg-white rounded-xl shadow-card p-6 transition-all duration-300;
+        @apply bg-white rounded-2xl shadow-lg p-8 transition-all duration-300;
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .card-hover {
-        @apply hover:shadow-card-hover hover:scale-[1.02] hover:-translate-y-1;
+        @apply hover:shadow-2xl;
+    }
+
+    .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     }
 
     .badge {
-        @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium;
+        @apply px-4 py-2 rounded-full text-sm font-semibold inline-flex items-center gap-2;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .badge-verified {
-        @apply bg-green-100 text-green-700 border border-green-200;
-    }
-
-    .badge-featured {
-        @apply bg-yellow-100 text-yellow-700 border border-yellow-200;
+        @apply bg-gradient-to-r from-green-50 to-green-100 text-green-700;
+        border: 1px solid rgba(34, 197, 94, 0.2);
     }
 
     .badge-category {
-        @apply bg-primary/10 text-primary border border-primary/20;
+        @apply bg-gradient-to-r from-primary/10 to-primary/5 text-primary;
+        border: 1px solid rgba(31, 143, 229, 0.2);
     }
 
-    .input {
-        @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all;
-    }
-
-    .skeleton {
-        @apply bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer bg-[length:1000px_100%];
+    .badge-featured {
+        @apply bg-gradient-to-r from-accent/10 to-accent/5 text-accent;
+        border: 1px solid rgba(255, 107, 107, 0.2);
     }
 }
 
 @layer utilities {
-    .text-gradient {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+
+    /* Gradient backgrounds */
+    .bg-gradient-primary {
+        @apply bg-gradient-to-r from-primary to-primary-dark;
     }
 
-    .bg-gradient-primary {
-        @apply bg-gradient-to-r from-primary to-primary-light;
+    .bg-gradient-accent {
+        @apply bg-gradient-to-r from-accent to-primary;
     }
 
     .bg-gradient-soft {
@@ -108,7 +146,57 @@
     }
 
     .zebra-sections>section:nth-child(even) {
-        @apply bg-background-soft;
+        @apply bg-gradient-to-br from-primary to-primary-dark text-white;
+    }
+
+    /* White text for headings and content in blue sections */
+    .zebra-sections>section:nth-child(even) h1,
+    .zebra-sections>section:nth-child(even) h2,
+    .zebra-sections>section:nth-child(even) h3,
+    .zebra-sections>section:nth-child(even) h4,
+    .zebra-sections>section:nth-child(even) h5,
+    .zebra-sections>section:nth-child(even) h6,
+    .zebra-sections>section:nth-child(even) p,
+    .zebra-sections>section:nth-child(even) span {
+        @apply text-white;
+    }
+
+    .zebra-sections>section:nth-child(even) .text-text-muted {
+        @apply text-white/90;
+    }
+
+    /* Cards in blue sections - solid white backgrounds with dark text */
+    .zebra-sections>section:nth-child(even) .card,
+    .zebra-sections>section:nth-child(even) [class*="bg-white"],
+    .zebra-sections>section:nth-child(even) [class*="Card"] {
+        @apply bg-white text-text-main shadow-lg;
+    }
+
+    /* Card content text colors - dark text on white cards */
+    .zebra-sections>section:nth-child(even) .card h3,
+    .zebra-sections>section:nth-child(even) .card h4,
+    .zebra-sections>section:nth-child(even) .card h5,
+    .zebra-sections>section:nth-child(even) .card p,
+    .zebra-sections>section:nth-child(even) .card span {
+        @apply text-text-main;
+    }
+
+    /* Button styling in blue sections - keep white/transparent for section-level buttons */
+    .zebra-sections>section:nth-child(even)>div>button,
+    .zebra-sections>section:nth-child(even)>div>.btn {
+        @apply bg-white/20 text-white border-white/30 hover:bg-white/30;
+    }
+
+    /* Buttons inside cards - primary color */
+    .zebra-sections>section:nth-child(even) .card button,
+    .zebra-sections>section:nth-child(even) .card .btn {
+        @apply bg-primary text-white hover:bg-primary-dark;
+    }
+
+    /* Icon backgrounds in cards - use primary color */
+    .zebra-sections>section:nth-child(even) .card [class*="bg-primary"],
+    .zebra-sections>section:nth-child(even) .card [class*="bg-accent"] {
+        @apply bg-primary/10 text-primary;
     }
 }
 
@@ -127,24 +215,44 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #1F8FE5;
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: #0B3C5D;
 }
 
-/* React Slick carousel custom styles */
-.slick-dots li button:before {
-    color: #1F8FE5 !important;
+/* Premium Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.slick-dots li.slick-active button:before {
-    color: #1F8FE5 !important;
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-.slick-prev:before,
-.slick-next:before {
-    color: #1F8FE5 !important;
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Gradient text */
+.text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
 }

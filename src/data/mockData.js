@@ -2,8 +2,9 @@
 import mockCategories from './mockCategories';
 import mockWebsites from './mockWebsites';
 import mockReviews from './mockReviews';
+import mockTestimonials from './mockTestimonials';
 
-export { mockCategories, mockWebsites, mockReviews };
+export { mockCategories, mockWebsites, mockReviews, mockTestimonials };
 
 // Helper functions
 export const getCategoryBySlug = (slug) => {
@@ -37,4 +38,11 @@ export const searchWebsites = (query) => {
         site.shortDescription.toLowerCase().includes(lowerQuery) ||
         site.category.toLowerCase().includes(lowerQuery)
     );
+};
+
+export const getRecentlyVerifiedWebsites = (limit = 4) => {
+    return mockWebsites
+        .filter(site => site.verified)
+        .sort((a, b) => new Date(b.verifiedDate) - new Date(a.verifiedDate))
+        .slice(0, limit);
 };
