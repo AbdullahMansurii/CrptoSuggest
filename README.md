@@ -4,9 +4,10 @@ A comprehensive crypto website directory platform built with React and Tailwind 
 
 ## 🚀 Features
 
-- **9 Main Pages**: Home, Browse, Website Detail, Categories, Submit, About, Contact, Compare, and Search Results
+- **10 Main Pages**: Home, Browse, Website Detail, Categories, Bookmarks, Submit, About, Contact, Compare, and NotFound
 - **Website Comparison**: Advanced comparison tool to evaluate multiple crypto platforms side-by-side
 - **Verified Listings**: Trust badges and verification indicators for reliable platforms
+- **Bookmarks System**: Save your favorite platforms for quick access later
 - **Advanced Search & Filter**: Multi-criteria filtering by category, features, blockchain, and more
 - **Responsive Design**: Mobile-first approach with perfect tablet and desktop experiences
 - **Modern UI/UX**: Smooth animations with Framer Motion, hover effects, and intuitive navigation
