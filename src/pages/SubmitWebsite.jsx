@@ -89,7 +89,7 @@ const SubmitWebsite = () => {
     return (
         <PageLayout>
             {isSubmitted && <Confetti />}
-            <div className="container-custom py-12 relative">
+            <div className="container-custom pt-32 pb-12 relative">
                 <div className="max-w-4xl mx-auto">
 
                     {isSubmitted ? (

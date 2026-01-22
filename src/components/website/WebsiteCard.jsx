@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Star, ArrowRight, Layers } from 'lucide-react';
+import { ExternalLink, Star, ArrowRight, Layers, Heart } from 'lucide-react';
 import Badge from '../common/Badge';
 import Button from '../common/Button';
 import { useCompare } from '../../contexts/CompareContext';
+import { useBookmark } from '../../contexts/BookmarkContext';
 
 const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
     const logoUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(website.name)}&size=128&background=0D6EFD&color=fff&bold=true`;
@@ -21,7 +22,9 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
     };
 
     const { addToCompare, removeFromCompare, isInCompare } = useCompare();
+    const { isBookmarked, toggleBookmark } = useBookmark();
     const isSelected = isInCompare(website.id);
+    const bookmarked = isBookmarked(website.id);
 
     const handleCompareClick = (e) => {
         e.preventDefault();
@@ -31,6 +34,12 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
         } else {
             addToCompare(website);
         }
+    };
+
+    const handleBookmarkClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleBookmark(website);
     };
 
     if (viewMode === 'list') {
@@ -52,9 +61,17 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
                                 </span>
                             )}
                         </div>
-                        <span className={`px-3 py-1 rounded-lg text-sm font-semibold border ${getCategoryColor(website.category)}`}>
-                            {website.category}
-                        </span>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={handleBookmarkClick}
+                                className={`p-2 rounded-full hover:bg-red-50 transition-colors ${bookmarked ? 'text-red-500 bg-red-50' : 'text-gray-400'}`}
+                            >
+                                <Heart className={`w-5 h-5 ${bookmarked ? 'fill-current' : ''}`} />
+                            </button>
+                            <span className={`px-3 py-1 rounded-lg text-sm font-semibold border ${getCategoryColor(website.category)}`}>
+                                {website.category}
+                            </span>
+                        </div>
                     </div>
 
                     <p className="text-text-muted mb-4 line-clamp-2">{website.shortDescription}</p>
@@ -66,7 +83,7 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
                     </div>
 
                     <div className="flex gap-4">
-                        <Link to={`/website/${website.slug}`} className="btn btn-outline btn-sm rounded-lg hover:shadow-md bg-white border-gray-200">
+                        <Link to={`/website/${website.slug}`} className="btn btn-sm rounded-lg hover:shadow-md bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50">
                             Details
                         </Link>
                         <a
@@ -109,6 +126,12 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
                             </div>
                         </div>
                     </div>
+                    <button
+                        onClick={handleBookmarkClick}
+                        className={`p-2 rounded-full hover:bg-red-50 transition-colors z-20 relative ${bookmarked ? 'text-red-500 bg-red-50' : 'text-gray-300 hover:text-red-400'}`}
+                    >
+                        <Heart className={`w-5 h-5 ${bookmarked ? 'fill-current' : ''}`} />
+                    </button>
                 </div>
 
                 <p className="text-text-muted text-sm mb-4 line-clamp-2 flex-grow group-hover:text-text-main transition-colors">
@@ -129,10 +152,10 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
 
                 <div className="mt-auto flex items-center gap-3 pt-4 border-t border-slate-100">
                     <Button
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
                         onClick={handleCompareClick}
-                        className={`flex-1 flex items-center justify-center gap-2 border-slate-200 hover:bg-slate-100 ${isSelected ? 'bg-primary/10 text-primary border-primary/30' : 'text-text-muted'}`}
+                        className={`flex-1 flex items-center justify-center gap-2 border hover:bg-slate-100 hover:text-gray-900 ${isSelected ? 'bg-primary/10 text-primary border-primary/30' : 'border-slate-200 text-text-muted'}`}
                     >
                         <Layers className={`w-4 h-4 ${isSelected ? 'fill-current' : ''}`} />
                         {isSelected ? 'Added' : 'Compare'}

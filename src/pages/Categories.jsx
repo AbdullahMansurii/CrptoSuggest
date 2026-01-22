@@ -38,7 +38,7 @@ const Categories = () => {
                     <div className="absolute top-40 -left-20 w-80 h-80 bg-accent/20 rounded-full blur-3xl"></div>
                 </div>
 
-                <div className="container-custom relative z-10 py-12">
+                <div className="container-custom relative z-10 pt-28 pb-12">
                     <Breadcrumb items={breadcrumbItems} />
 
                     <div className="mb-16 text-center max-w-3xl mx-auto">

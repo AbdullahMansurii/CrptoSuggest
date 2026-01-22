@@ -3,7 +3,7 @@ import { ChevronDown, Copy, LogOut, Check } from 'lucide-react';
 import { useWallet } from '../../contexts/WalletContext';
 import WalletConnectionModal from './WalletConnectionModal';
 
-const ConnectWalletButton = () => {
+const ConnectWalletButton = ({ className = "" }) => {
     const { isConnected, getTruncatedAddress, disconnectWallet } = useWallet();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +26,7 @@ const ConnectWalletButton = () => {
             <>
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="px-6 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                    className={`px-5 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${className}`}
                 >
                     Connect Wallet
                 </button>

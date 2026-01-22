@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { Grid, List, Search, Filter, ArrowRight } from 'lucide-react';
 import PageLayout from '../components/layout/PageLayout';
 import Breadcrumb from '../components/common/Breadcrumb';
@@ -6,23 +7,42 @@ import WebsiteGrid from '../components/website/WebsiteGrid';
 import { mockWebsites } from '../data/mockData';
 
 const Browse = () => {
+    const { category } = useParams();
+    const [searchParams] = useSearchParams();
+    const initialSearch = searchParams.get('search') || '';
+
     const [viewMode, setViewMode] = useState('grid');
     const [sortBy, setSortBy] = useState('popular');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState(initialSearch);
+
+    // Update state when URL params change (e.g. back button)
+    useEffect(() => {
+        setSearchQuery(searchParams.get('search') || '');
+    }, [searchParams]);
 
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
-        { label: 'Browse Websites' }
+        { label: category ? `${category} Websites` : 'Browse Websites' }
     ];
 
     const filteredWebsites = mockWebsites
         .filter(site => {
             const query = searchQuery.toLowerCase();
-            return (
+            const matchesSearch = (
                 site.name.toLowerCase().includes(query) ||
                 site.shortDescription.toLowerCase().includes(query) ||
                 site.category.toLowerCase().includes(query)
             );
+
+            // Loose matching for category to handle "DeFi" vs "defi" vs "Decentralized Finance"
+            let matchesCategory = true;
+            if (category) {
+                const catSlug = category.toLowerCase();
+                const siteCat = site.category.toLowerCase();
+                matchesCategory = siteCat.includes(catSlug) || catSlug.includes(siteCat);
+            }
+
+            return matchesSearch && matchesCategory;
         })
         .sort((a, b) => {
             if (sortBy === 'popular') return (b.reviews || 0) - (a.reviews || 0);
@@ -41,7 +61,7 @@ const Browse = () => {
                     <div className="absolute top-[20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl"></div>
                 </div>
 
-                <div className="container-custom relative z-10 py-12">
+                <div className="container-custom relative z-10 pt-28 pb-12">
                     <Breadcrumb items={breadcrumbItems} />
 
                     <div className="mb-12">

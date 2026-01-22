@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PageLayout from '../components/layout/PageLayout';
 import { Shield, Users, TrendingUp, Award, Globe, Zap, Search, CheckCircle, ArrowRight } from 'lucide-react';
 
@@ -6,7 +7,7 @@ const About = () => {
     return (
         <PageLayout>
             {/* Hero Section */}
-            <div className="relative overflow-hidden bg-background-soft pt-20 pb-32">
+            <div className="relative overflow-hidden bg-background-soft pt-20 pb-32 box-content">
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
                     <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl"></div>
                     <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-accent/5 blur-3xl"></div>
@@ -189,12 +190,16 @@ const About = () => {
                             Join thousands of users who trust Crypto Suggest for their daily crypto discovery.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <button className="px-8 py-4 bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
-                                Browse Websites
-                            </button>
-                            <button className="px-8 py-4 bg-transparent border-2 border-white/30 text-white font-bold rounded-xl hover:bg-white/10 transition-all duration-300">
-                                Contact Us
-                            </button>
+                            <Link to="/browse">
+                                <button className="px-8 py-4 bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                                    Browse Websites
+                                </button>
+                            </Link>
+                            <Link to="/contact">
+                                <button className="px-8 py-4 bg-transparent border-2 border-white/30 text-white font-bold rounded-xl hover:bg-white/10 transition-all duration-300">
+                                    Contact Us
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

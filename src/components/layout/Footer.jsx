@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
+import { Twitter, Facebook, Instagram, Mail } from 'lucide-react';
 
 const Footer = () => {
     const categories = [
@@ -65,10 +65,10 @@ const Footer = () => {
                                     <Twitter className="w-5 h-5 text-white hover:text-accent transition-colors" />
                                 </a>
                                 <a href="#" className="p-2 bg-white/10 hover:bg-accent/20 rounded-lg transition-all hover:scale-110">
-                                    <Linkedin className="w-5 h-5 text-white hover:text-accent transition-colors" />
+                                    <Instagram className="w-5 h-5 text-white hover:text-accent transition-colors" />
                                 </a>
                                 <a href="#" className="p-2 bg-white/10 hover:bg-accent/20 rounded-lg transition-all hover:scale-110">
-                                    <Github className="w-5 h-5 text-white hover:text-accent transition-colors" />
+                                    <Facebook className="w-5 h-5 text-white hover:text-accent transition-colors" />
                                 </a>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ExternalLink, Share2, Check, X, Shield, Star, Award, TrendingUp, Info } from 'lucide-react';
+import { ExternalLink, Share2, Check, X, Shield, Star, Award, TrendingUp, Info, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PageLayout from '../components/layout/PageLayout';
 import Breadcrumb from '../components/common/Breadcrumb';
@@ -11,17 +11,19 @@ import Modal from '../components/common/Modal';
 import WebsiteReviews from '../components/reviews/WebsiteReviews';
 import WebsiteCard from '../components/website/WebsiteCard'; // Import for Similar Websites
 import { getWebsiteBySlug, getWebsitesByCategory } from '../data/mockData';
+import { useBookmark } from '../contexts/BookmarkContext';
 
 const WebsiteDetail = () => {
     const { slug } = useParams();
     const website = getWebsiteBySlug(slug);
     const [activeTab, setActiveTab] = useState('overview');
     const [showExternalModal, setShowExternalModal] = useState(false);
+    const { isBookmarked, toggleBookmark } = useBookmark();
 
     if (!website) {
         return (
             <PageLayout>
-                <div className="container-custom py-20 text-center">
+                <div className="container-custom pt-40 pb-20 text-center">
                     <h1 className="text-4xl font-bold mb-4">Website Not Found</h1>
                     <Link to="/browse"><Button>Browse All Websites</Button></Link>
                 </div>
@@ -47,14 +49,23 @@ const WebsiteDetail = () => {
     ];
 
     // Trust Score Calculation (Mock logic for visual)
-    const trustScore = 98; // Could be dynamic based on verification
+    const [trustScore, setTrustScore] = useState(0);
+
+    React.useEffect(() => {
+        // Animate score on mount
+        const timer = setTimeout(() => {
+            setTrustScore(98);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, []);
+
     const trustColor = trustScore >= 90 ? 'text-green-500' : trustScore >= 70 ? 'text-yellow-500' : 'text-red-500';
     const trustGradient = trustScore >= 90 ? 'from-green-400 to-emerald-600' : 'from-yellow-400 to-orange-500';
 
     return (
         <PageLayout>
             {/* Dynamic Hero Section */}
-            <div className="relative bg-slate-50 overflow-hidden pt-12 pb-24">
+            <div className="relative bg-slate-50 overflow-hidden pt-28 pb-24">
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 to-accent/5 z-0"></div>
                 {/* Decorative Blobs */}
                 <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
@@ -104,7 +115,16 @@ const WebsiteDetail = () => {
                                 >
                                     Visit Website <ExternalLink className="w-5 h-5 ml-2" />
                                 </Button>
-                                <Button variant="outline" size="lg" className="bg-white hover:bg-gray-50">
+                                <Button
+                                    variant="ghost"
+                                    size="lg"
+                                    className={`bg-white border hover:bg-gray-50 hover:text-gray-900 border-gray-200 ${isBookmarked(website.id) ? 'text-red-500 border-red-200 bg-red-50 hover:bg-red-100' : ''}`}
+                                    onClick={() => toggleBookmark(website)}
+                                >
+                                    <Heart className={`w-5 h-5 mr-2 ${isBookmarked(website.id) ? 'fill-current' : ''}`} />
+                                    {isBookmarked(website.id) ? 'Saved' : 'Save'}
+                                </Button>
+                                <Button variant="ghost" size="lg" className="bg-white border border-gray-200 hover:bg-gray-50 hover:text-gray-900">
                                     <Share2 className="w-5 h-5 mr-2" /> Share
                                 </Button>
                             </div>
@@ -172,8 +192,8 @@ const WebsiteDetail = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`px-8 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === tab.id
-                                    ? 'bg-primary text-white shadow-md'
-                                    : 'text-text-muted hover:bg-gray-50'
+                                ? 'bg-primary text-white shadow-md'
+                                : 'text-text-muted hover:bg-gray-50'
                                 }`}
                         >
                             {tab.label}
