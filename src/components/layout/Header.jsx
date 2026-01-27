@@ -31,8 +31,8 @@ const Header = () => {
     return (
         <header
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-100/50 py-3'
-                : 'bg-transparent py-5'
+                ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-100/50 py-2 sm:py-3'
+                : 'bg-transparent py-3 sm:py-5'
                 }`}
         >
             <div className="container-custom">
@@ -42,7 +42,7 @@ const Header = () => {
                         <motion.div
                             transition={{ type: "spring", stiffness: 300 }}
                         >
-                            <img src="/logo.png" alt="Crypto Suggest" className="h-10 w-auto" />
+                            <img src="/logo.png" alt="Crypto Suggest" className="h-8 sm:h-10 w-auto" />
                         </motion.div>
                     </Link>
 
@@ -54,7 +54,7 @@ const Header = () => {
                                 <Link
                                     key={link.path}
                                     to={link.path}
-                                    className="relative px-4 py-2 text-sm font-bold transition-colors group"
+                                    className="relative px-3 xl:px-4 py-2 text-sm font-bold transition-colors group"
                                 >
                                     <span className={`relative z-10 transition-colors ${isActive ? 'text-primary' : 'text-gray-600 hover:text-gray-900'}`}>
                                         {link.name}
@@ -62,7 +62,7 @@ const Header = () => {
                                     {isActive && (
                                         <motion.div
                                             layoutId="nav-indicator"
-                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full mx-4"
+                                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full mx-3 xl:mx-4"
                                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                         />
                                     )}
@@ -73,16 +73,17 @@ const Header = () => {
                     </nav>
 
                     {/* Right Side Actions - Standardized Sizes */}
-                    <div className="hidden lg:flex items-center gap-3">
-                        <ConnectWalletButton className="!h-11 !px-6 !py-0 flex items-center justify-center bg-gray-900 hover:bg-black text-white shadow-none border-0" />
+                    <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+                        <ConnectWalletButton className="!h-11 !px-4 xl:!px-6 !py-0 flex items-center justify-center bg-gray-900 hover:bg-black text-white shadow-none border-0 text-sm" />
                         <Link to="/submit">
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="h-11 px-6 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all flex items-center gap-2"
+                                className="h-11 px-4 xl:px-6 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all flex items-center gap-2 text-sm"
                             >
                                 <Sparkles className="w-4 h-4 fill-current opacity-80" />
-                                <span>Submit Website</span>
+                                <span className="hidden xl:inline">Submit Website</span>
+                                <span className="xl:hidden">Submit</span>
                             </motion.button>
                         </Link>
                     </div>
@@ -91,7 +92,8 @@ const Header = () => {
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="lg:hidden p-2 text-gray-700 bg-white/50 rounded-lg backdrop-blur-sm border border-gray-200 relative z-50"
+                        className="lg:hidden min-w-[44px] min-h-[44px] p-2.5 text-gray-700 bg-white/50 rounded-lg backdrop-blur-sm border border-gray-200 relative z-50 flex items-center justify-center"
+                        aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                     >
                         {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </motion.button>
@@ -106,9 +108,9 @@ const Header = () => {
                         animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
                         exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="fixed inset-0 top-0 z-40 bg-white lg:hidden flex flex-col pt-24 px-6"
+                        className="fixed inset-0 top-0 z-40 bg-white lg:hidden flex flex-col pt-20 sm:pt-24 px-4 sm:px-6"
                     >
-                        <nav className="flex flex-col gap-4">
+                        <nav className="flex flex-col gap-2 sm:gap-4">
                             {navLinks.map((link, i) => (
                                 <motion.div
                                     key={link.path}
@@ -119,7 +121,7 @@ const Header = () => {
                                     <Link
                                         to={link.path}
                                         onClick={() => setMobileMenuOpen(false)}
-                                        className={`flex items-center justify-between p-4 rounded-2xl text-xl font-bold transition-all ${location.pathname === link.path
+                                        className={`flex items-center justify-between min-h-[56px] p-4 rounded-xl sm:rounded-2xl text-lg sm:text-xl font-bold transition-all ${location.pathname === link.path
                                             ? 'bg-blue-50 text-primary'
                                             : 'text-gray-600 hover:bg-gray-50'
                                             }`}
@@ -131,10 +133,10 @@ const Header = () => {
                             ))}
                         </nav>
 
-                        <div className="mt-auto mb-10 space-y-4">
-                            <ConnectWalletButton className="w-full justify-center h-14 text-lg" />
+                        <div className="mt-auto mb-6 sm:mb-10 space-y-3 sm:space-y-4">
+                            <ConnectWalletButton className="w-full justify-center min-h-[56px] h-14 text-base sm:text-lg" />
                             <Link to="/submit" onClick={() => setMobileMenuOpen(false)} className="block">
-                                <Button className="w-full justify-center h-14 text-lg bg-gray-900 hover:bg-black text-white">
+                                <Button className="w-full justify-center min-h-[56px] h-14 text-base sm:text-lg bg-gray-900 hover:bg-black text-white">
                                     Submit Your Website
                                 </Button>
                             </Link>

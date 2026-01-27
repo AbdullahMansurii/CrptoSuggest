@@ -5,6 +5,16 @@ export default {
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
+        screens: {
+            'xs': '320px',   // Small phones
+            'sm': '640px',   // Large phones
+            'md': '768px',   // Tablets
+            'lg': '1024px',  // Small laptops
+            'xl': '1280px',  // Desktop
+            '2xl': '1536px', // Large desktop
+            '3xl': '1920px', // Full HD
+            '4xl': '2560px', // 2K/4K displays
+        },
         extend: {
             colors: {
                 primary: {

@@ -31,27 +31,26 @@ const Home = () => {
     return (
         <PageLayout>
             <div className="overflow-hidden">
-                {/* Hero Section - Bold & Modern */}
                 {/* Hero Section - Split Screen Modern Layout */}
-                <section className="relative min-h-screen flex items-center py-20 lg:py-0 overflow-hidden bg-[#FAFBFF]">
+                <section className="relative min-h-screen flex items-center py-16 sm:py-20 lg:py-0 overflow-hidden bg-[#FAFBFF]">
                     {/* Background Elements */}
-                    <div className="absolute top-0 right-0 w-[60%] h-full bg-gradient-to-l from-blue-50/80 via-purple-50/50 to-transparent z-0"></div>
-                    <div className="absolute -top-24 -right-24 w-[600px] h-[600px] bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl opacity-60 animate-pulse-slow"></div>
-                    <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-cyan-100/30 to-blue-100/30 rounded-full blur-3xl opacity-50"></div>
+                    <div className="absolute top-0 right-0 w-full sm:w-[60%] h-full bg-gradient-to-l from-blue-50/80 via-purple-50/50 to-transparent z-0"></div>
+                    <div className="absolute -top-24 -right-24 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl opacity-60 animate-pulse-slow"></div>
+                    <div className="absolute bottom-0 left-0 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-gradient-to-tr from-cyan-100/30 to-blue-100/30 rounded-full blur-3xl opacity-50"></div>
 
                     <div className="container-custom relative z-10">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
 
                             {/* Left Side: Content */}
-                            <div className="space-y-8 max-w-2xl pt-20 lg:pt-0">
+                            <div className="space-y-6 sm:space-y-8 max-w-2xl pt-16 sm:pt-20 lg:pt-0">
                                 {/* New Badge */}
-                                <div className="inline-flex items-center gap-3 bg-white p-1 pr-4 rounded-full border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-default animate-fade-in-up">
-                                    <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">New</span>
-                                    <span className="text-sm font-medium text-gray-600">The most trusted crypto directory</span>
+                                <div className="inline-flex items-center gap-2 sm:gap-3 bg-white p-1 pr-3 sm:pr-4 rounded-full border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-default animate-fade-in-up">
+                                    <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold px-2 sm:px-3 py-1 rounded-full uppercase tracking-wider">New</span>
+                                    <span className="text-xs sm:text-sm font-medium text-gray-600">The most trusted crypto directory</span>
                                 </div>
 
                                 {/* Main Headline */}
-                                <h1 className="text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight animate-fade-in-up delay-100">
+                                <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight animate-fade-in-up delay-100">
                                     Build on
                                     <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
@@ -62,33 +61,35 @@ const Home = () => {
                                 </h1>
 
                                 {/* Subheadline */}
-                                <p className="text-xl text-gray-600 leading-relaxed max-w-lg animate-fade-in-up delay-200">
+                                <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-lg animate-fade-in-up delay-200">
                                     Discover manually verified Exchanges, Wallets, and DeFi protocols.
                                     <span className="block mt-2">No scams. Just trusted platforms.</span>
                                 </p>
 
                                 {/* Search Bar - Left Aligned */}
-                                <div className="w-full max-w-lg mt-8 animate-fade-in-up delay-300">
+                                <div className="w-full max-w-lg mt-6 sm:mt-8 animate-fade-in-up delay-300">
                                     <div className="relative group">
-                                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-20 group-hover:opacity-30 transition"></div>
-                                        <div className="relative bg-white rounded-2xl shadow-xl border border-gray-100 p-2 flex items-center">
-                                            <Search className="w-6 h-6 text-gray-400 ml-4" />
-                                            <input
-                                                type="text"
-                                                placeholder="Search protocols..."
-                                                className="w-full h-14 pl-4 pr-4 rounded-xl text-lg text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent font-medium"
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter') {
-                                                        window.location.href = `/browse?search=${encodeURIComponent(e.target.value)}`;
-                                                    }
-                                                }}
-                                            />
+                                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl sm:rounded-2xl blur opacity-20 group-hover:opacity-30 transition"></div>
+                                        <div className="relative bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-100 p-1.5 sm:p-2 flex flex-col xs:flex-row items-stretch xs:items-center gap-2">
+                                            <div className="flex items-center flex-1 min-w-0">
+                                                <Search className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 ml-3 sm:ml-4 flex-shrink-0" />
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search protocols..."
+                                                    className="w-full h-12 sm:h-14 pl-3 sm:pl-4 pr-3 sm:pr-4 rounded-lg sm:rounded-xl text-base sm:text-lg text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent font-medium"
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            window.location.href = `/browse?search=${encodeURIComponent(e.target.value)}`;
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
                                             <button
                                                 onClick={(e) => {
-                                                    const input = e.currentTarget.previousElementSibling;
+                                                    const input = e.currentTarget.previousElementSibling.querySelector('input');
                                                     window.location.href = `/browse?search=${encodeURIComponent(input.value)}`;
                                                 }}
-                                                className="h-12 px-8 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-colors shadow-lg flex items-center gap-2"
+                                                className="min-h-[48px] sm:h-12 px-6 sm:px-8 bg-gray-900 text-white font-bold rounded-lg sm:rounded-xl hover:bg-black transition-colors shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base"
                                             >
                                                 Explore <ArrowRight className="w-4 h-4" />
                                             </button>
@@ -97,22 +98,22 @@ const Home = () => {
                                 </div>
 
                                 {/* Trust Metrics */}
-                                <div className="flex items-center gap-8 pt-4 animate-fade-in-up delay-400">
-                                    <div className="flex -space-x-4">
+                                <div className="flex flex-wrap items-center gap-4 sm:gap-8 pt-2 sm:pt-4 animate-fade-in-up delay-400">
+                                    <div className="flex -space-x-3 sm:-space-x-4">
                                         {[1, 2, 3, 4].map((i) => (
-                                            <div key={i} className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-bold text-gray-600 shadow-sm first:bg-blue-100 first:text-blue-600">
+                                            <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-bold text-gray-600 shadow-sm first:bg-blue-100 first:text-blue-600">
                                                 {i === 4 ? '+' : ''}
                                             </div>
                                         ))}
                                     </div>
                                     <div>
-                                        <p className="font-bold text-gray-900 text-lg">50,000+</p>
-                                        <p className="text-sm text-gray-500 font-medium">Monthly Users</p>
+                                        <p className="font-bold text-gray-900 text-base sm:text-lg">50,000+</p>
+                                        <p className="text-xs sm:text-sm text-gray-500 font-medium">Monthly Users</p>
                                     </div>
-                                    <div className="w-px h-10 bg-gray-200"></div>
+                                    <div className="w-px h-8 sm:h-10 bg-gray-200 hidden xs:block"></div>
                                     <div>
-                                        <p className="font-bold text-gray-900 text-lg">500+</p>
-                                        <p className="text-sm text-gray-500 font-medium">Verified Apps</p>
+                                        <p className="font-bold text-gray-900 text-base sm:text-lg">500+</p>
+                                        <p className="text-xs sm:text-sm text-gray-500 font-medium">Verified Apps</p>
                                     </div>
                                 </div>
                             </div>
@@ -132,15 +133,15 @@ const Home = () => {
                 </section>
 
                 {/* Featured Categories - Light Blue Gradient with Decorative Elements */}
-                <section className="py-24 relative overflow-hidden">
+                <section className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
                     {/* Multi-layered Gradient Background */}
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-100"></div>
                     <div className="absolute inset-0 bg-gradient-to-tr from-blue-100/30 via-transparent to-cyan-100/30"></div>
 
                     {/* Decorative Floating Orbs */}
-                    <div className="absolute top-10 left-[5%] w-72 h-72 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
-                    <div className="absolute bottom-10 right-[10%] w-96 h-96 bg-gradient-to-br from-indigo-400/15 to-blue-400/15 rounded-full blur-3xl animate-float-slow"></div>
-                    <div className="absolute top-1/2 left-[15%] w-64 h-64 bg-gradient-to-br from-cyan-300/10 to-blue-300/10 rounded-full blur-2xl"></div>
+                    <div className="absolute top-10 left-[5%] w-48 sm:w-72 h-48 sm:h-72 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
+                    <div className="absolute bottom-10 right-[10%] w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-br from-indigo-400/15 to-blue-400/15 rounded-full blur-3xl animate-float-slow"></div>
+                    <div className="absolute top-1/2 left-[15%] w-40 sm:w-64 h-40 sm:h-64 bg-gradient-to-br from-cyan-300/10 to-blue-300/10 rounded-full blur-2xl"></div>
 
                     {/* Subtle Grid Pattern Overlay */}
                     <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -149,33 +150,33 @@ const Home = () => {
                     }}></div>
 
                     <div className="container-custom relative z-10">
-                        <div className="text-center mb-16">
-                            <span className="inline-block px-4 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-blue-200/50 text-primary font-bold tracking-wider uppercase text-sm mb-4 shadow-sm">Discovery</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-text-main mb-6 drop-shadow-sm">Browse by Category</h2>
-                            <p className="text-xl text-text-muted max-w-2xl mx-auto leading-relaxed">Explore verified crypto websites across all categories, styled for easy discovery.</p>
+                        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+                            <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/60 backdrop-blur-sm border border-blue-200/50 text-primary font-bold tracking-wider uppercase text-xs sm:text-sm mb-3 sm:mb-4 shadow-sm">Discovery</span>
+                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-main mb-4 sm:mb-6 drop-shadow-sm">Browse by Category</h2>
+                            <p className="text-base sm:text-lg lg:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed px-4">Explore verified crypto websites across all categories, styled for easy discovery.</p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                             {mockCategories.filter(cat => cat.featured).map((category, index) => {
                                 const gradient = getGradient(index);
                                 return (
                                     <Link key={category.id} to={`/category/${category.slug}`} className="group">
-                                        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-white/60 h-full relative overflow-hidden hover:bg-white/90">
+                                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-white/60 h-full relative overflow-hidden hover:bg-white/90">
                                             {/* Decorative gradient corner */}
-                                            <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${gradient} opacity-10 rounded-bl-full -mr-10 -mt-10 transition-opacity group-hover:opacity-20`}></div>
+                                            <div className={`absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br ${gradient} opacity-10 rounded-bl-full -mr-10 -mt-10 transition-opacity group-hover:opacity-20`}></div>
 
                                             {/* Subtle shine effect on hover */}
                                             <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                                            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 relative z-10`}>
+                                            <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 sm:mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 relative z-10`}>
                                                 {/* We'd ideally map icons dynamically, simplified here for now */}
-                                                <Star className="w-8 h-8 text-white" />
+                                                <Star className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                                             </div>
 
-                                            <h3 className="text-xl font-bold text-text-main mb-2 group-hover:text-primary transition-colors relative z-10">{category.name}</h3>
-                                            <p className="text-text-muted font-medium mb-6 relative z-10">{category.websiteCount} Verified Apps</p>
+                                            <h3 className="text-lg sm:text-xl font-bold text-text-main mb-2 group-hover:text-primary transition-colors relative z-10">{category.name}</h3>
+                                            <p className="text-sm sm:text-base text-text-muted font-medium mb-4 sm:mb-6 relative z-10">{category.websiteCount} Verified Apps</p>
 
-                                            <div className="flex items-center text-sm font-bold text-gray-400 group-hover:text-primary transition-colors relative z-10">
+                                            <div className="flex items-center text-xs sm:text-sm font-bold text-gray-400 group-hover:text-primary transition-colors relative z-10">
                                                 Explore <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
                                             </div>
                                         </div>
@@ -184,9 +185,9 @@ const Home = () => {
                             })}
                         </div>
 
-                        <div className="text-center mt-12">
+                        <div className="text-center mt-8 sm:mt-12">
                             <Link to="/categories">
-                                <button className="px-8 py-3 rounded-xl bg-white/60 backdrop-blur-sm border-2 border-primary/30 text-primary font-bold hover:bg-primary hover:text-white hover:border-primary transition-all shadow-lg hover:shadow-xl hover:scale-105">
+                                <button className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-white/60 backdrop-blur-sm border-2 border-primary/30 text-primary font-bold hover:bg-primary hover:text-white hover:border-primary transition-all shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base">
                                     View All Categories
                                 </button>
                             </Link>

@@ -44,53 +44,54 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
 
     if (viewMode === 'list') {
         return (
-            <div className={`bg-slate-50 rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex flex-col md:flex-row gap-6 group ${className}`}>
+            <div className={`bg-slate-50 rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex flex-col sm:flex-row gap-4 sm:gap-6 group ${className}`}>
                 <img
                     src={logoUrl}
                     alt={website.name}
-                    className="w-24 h-24 rounded-2xl object-cover shadow-lg group-hover:scale-105 transition-transform duration-300"
+                    className="w-20 h-20 sm:w-24 sm:h-24 mx-auto sm:mx-0 rounded-2xl object-cover shadow-lg group-hover:scale-105 transition-transform duration-300"
                 />
 
-                <div className="flex-1">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
-                        <div className="flex items-center gap-3">
-                            <h3 className="text-2xl font-bold text-text-main group-hover:text-primary transition-colors">{website.name}</h3>
+                <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                        <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3 min-w-0">
+                            <h3 className="text-xl sm:text-2xl font-bold text-text-main group-hover:text-primary transition-colors truncate">{website.name}</h3>
                             {website.featured && (
-                                <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow-sm flex items-center gap-1">
+                                <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-sm flex items-center gap-1 w-fit">
                                     <Star className="w-3 h-3 fill-current" /> Featured
                                 </span>
                             )}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                             <button
                                 onClick={handleBookmarkClick}
-                                className={`p-2 rounded-full hover:bg-red-50 transition-colors ${bookmarked ? 'text-red-500 bg-red-50' : 'text-gray-400'}`}
+                                className={`min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-red-50 transition-colors ${bookmarked ? 'text-red-500 bg-red-50' : 'text-gray-400'}`}
+                                aria-label={bookmarked ? 'Remove bookmark' : 'Add bookmark'}
                             >
                                 <Heart className={`w-5 h-5 ${bookmarked ? 'fill-current' : ''}`} />
                             </button>
-                            <span className={`px-3 py-1 rounded-lg text-sm font-semibold border ${getCategoryColor(website.category)}`}>
+                            <span className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold border ${getCategoryColor(website.category)}`}>
                                 {website.category}
                             </span>
                         </div>
                     </div>
 
-                    <p className="text-text-muted mb-4 line-clamp-2">{website.shortDescription}</p>
+                    <p className="text-sm sm:text-base text-text-muted mb-4 line-clamp-2">{website.shortDescription}</p>
 
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {website.features.mobileApp && <span className="text-xs px-2.5 py-1 bg-white text-gray-600 rounded-md font-medium border border-gray-200">📱 Mobile App</span>}
-                        {!website.features.kycRequired && <span className="text-xs px-2.5 py-1 bg-green-50 text-green-700 rounded-md font-medium border border-green-200">🔓 No KYC</span>}
-                        {website.features.fiatSupport && <span className="text-xs px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md font-medium border border-indigo-200">💳 Fiat</span>}
+                        {website.features.mobileApp && <span className="text-xs px-2.5 py-1.5 bg-white text-gray-600 rounded-md font-medium border border-gray-200">📱 Mobile App</span>}
+                        {!website.features.kycRequired && <span className="text-xs px-2.5 py-1.5 bg-green-50 text-green-700 rounded-md font-medium border border-green-200">🔓 No KYC</span>}
+                        {website.features.fiatSupport && <span className="text-xs px-2.5 py-1.5 bg-indigo-50 text-indigo-700 rounded-md font-medium border border-indigo-200">💳 Fiat</span>}
                     </div>
 
-                    <div className="flex gap-4">
-                        <Link to={`/website/${website.slug}`} className="btn btn-sm rounded-lg hover:shadow-md bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+                    <div className="flex flex-col xs:flex-row gap-3">
+                        <Link to={`/website/${website.slug}`} className="min-h-[44px] px-4 py-2.5 text-center rounded-lg hover:shadow-md bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium transition-all">
                             Details
                         </Link>
                         <a
                             href={website.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn btn-primary btn-sm rounded-lg shadow-blue-200 shadow-lg hover:shadow-xl hover:shadow-blue-300/50 inline-flex items-center gap-2"
+                            className="min-h-[44px] px-4 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-lg shadow-lg hover:shadow-xl transition-all inline-flex items-center justify-center gap-2 font-medium"
                         >
                             Visit Site <ExternalLink className="w-4 h-4" />
                         </a>
@@ -102,43 +103,44 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
 
     // Grid View
     return (
-        <Link to={`/website/${website.slug}`} className={`group block h-full bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${className}`}>
-            <div className="p-6 h-full flex flex-col relative">
+        <Link to={`/website/${website.slug}`} className={`group block h-full bg-slate-50 border border-slate-200 rounded-2xl sm:rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${className}`}>
+            <div className="p-4 sm:p-6 h-full flex flex-col relative">
                 {/* Selection Overlay Effect */}
                 {isSelected && (
-                    <div className="absolute inset-0 border-2 border-primary rounded-3xl pointer-events-none z-10 bg-primary/5"></div>
+                    <div className="absolute inset-0 border-2 border-primary rounded-2xl sm:rounded-3xl pointer-events-none z-10 bg-primary/5"></div>
                 )}
 
-                <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-3">
+                <div className="flex justify-between items-start mb-3 sm:mb-4 gap-2">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                         <img
                             src={logoUrl}
                             alt={website.name}
-                            className="w-12 h-12 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform"
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform flex-shrink-0"
                         />
-                        <div>
-                            <h3 className="font-bold text-lg text-text-main group-hover:text-primary transition-colors">{website.name}</h3>
+                        <div className="min-w-0 flex-1">
+                            <h3 className="font-bold text-base sm:text-lg text-text-main group-hover:text-primary transition-colors truncate">{website.name}</h3>
                             <div className="flex items-center gap-1 text-xs font-medium text-text-muted">
-                                <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                                <Star className="w-3 h-3 text-yellow-400 fill-current flex-shrink-0" />
                                 <span>{website.rating}</span>
                                 <span className="mx-1">•</span>
-                                <span>{website.reviewCount} reviews</span>
+                                <span className="truncate">{website.reviewCount} reviews</span>
                             </div>
                         </div>
                     </div>
                     <button
                         onClick={handleBookmarkClick}
-                        className={`p-2 rounded-full hover:bg-red-50 transition-colors z-20 relative ${bookmarked ? 'text-red-500 bg-red-50' : 'text-gray-300 hover:text-red-400'}`}
+                        className={`min-w-[44px] min-h-[44px] p-2.5 rounded-full hover:bg-red-50 transition-colors z-20 relative flex-shrink-0 ${bookmarked ? 'text-red-500 bg-red-50' : 'text-gray-300 hover:text-red-400'}`}
+                        aria-label={bookmarked ? 'Remove bookmark' : 'Add bookmark'}
                     >
                         <Heart className={`w-5 h-5 ${bookmarked ? 'fill-current' : ''}`} />
                     </button>
                 </div>
 
-                <p className="text-text-muted text-sm mb-4 line-clamp-2 flex-grow group-hover:text-text-main transition-colors">
+                <p className="text-text-muted text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 flex-grow group-hover:text-text-main transition-colors">
                     {website.shortDescription}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
                     <Badge className={getCategoryColor(website.category)}>{website.category}</Badge>
                     {website.featured && (
                         <div className="relative">
@@ -150,17 +152,17 @@ const WebsiteCard = ({ website, viewMode = 'grid', className = '' }) => {
                     )}
                 </div>
 
-                <div className="mt-auto flex items-center gap-3 pt-4 border-t border-slate-100">
+                <div className="mt-auto flex items-center gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-slate-100">
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={handleCompareClick}
-                        className={`flex-1 flex items-center justify-center gap-2 border hover:bg-slate-100 hover:text-gray-900 ${isSelected ? 'bg-primary/10 text-primary border-primary/30' : 'border-slate-200 text-text-muted'}`}
+                        className={`flex-1 min-h-[44px] flex items-center justify-center gap-2 border hover:bg-slate-100 hover:text-gray-900 text-xs sm:text-sm ${isSelected ? 'bg-primary/10 text-primary border-primary/30' : 'border-slate-200 text-text-muted'}`}
                     >
                         <Layers className={`w-4 h-4 ${isSelected ? 'fill-current' : ''}`} />
-                        {isSelected ? 'Added' : 'Compare'}
+                        <span className="hidden xs:inline">{isSelected ? 'Added' : 'Compare'}</span>
                     </Button>
-                    <Button size="sm" className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-slate-800 to-slate-900 group-hover:from-primary group-hover:to-accent transition-all duration-300 shadow-md group-hover:shadow-primary/30">
+                    <Button size="sm" className="flex-1 min-h-[44px] flex items-center justify-center gap-2 bg-gradient-to-r from-slate-800 to-slate-900 group-hover:from-primary group-hover:to-accent transition-all duration-300 shadow-md group-hover:shadow-primary/30 text-xs sm:text-sm">
                         Details <ArrowRight className="w-4 h-4" />
                     </Button>
                 </div>
